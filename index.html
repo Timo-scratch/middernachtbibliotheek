@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>De Bibliotheek van Na Middernacht</title>
+<style>
+:root{--bg:#0e1230;--bg2:#1b1f4a;--ink:#f7efe0;--dim:#b9b4d6;--card:#262b5e;--edge:rgba(255,255,255,.25);--gold:#ffc857;--accent:#ff7b6b}
+@media (prefers-color-scheme:light){:root{--bg:#fbf3e2;--bg2:#f1e2c4;--ink:#2a2146;--dim:#6b6388;--card:#ffffff;--edge:rgba(42,33,70,.3);--gold:#d98e04;--accent:#d9483b}}
+*{box-sizing:border-box}
+html{background:#0e1230}
+body{margin:0;min-height:100vh;background-color:var(--bg);background-image:radial-gradient(ellipse at top,var(--bg2),var(--bg));color:var(--ink);font-family:Georgia,"Times New Roman",serif;padding:calc(24px + env(safe-area-inset-top,0px)) 18px calc(60px + env(safe-area-inset-bottom,0px));max-width:560px;margin:0 auto}
+.clock{font:700 14px ui-monospace,Menlo,monospace;color:var(--gold);letter-spacing:.2em;text-align:center}
+h1{font-size:30px;line-height:1.15;text-align:center;margin:8px 0 10px}
+.sub{text-align:center;color:var(--dim);font-size:16px;line-height:1.5;margin:0 0 22px}
+.belt{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px 10px;border-radius:18px;border:1px solid var(--edge)}
+.plate{-webkit-appearance:none;appearance:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;background:var(--card);color:var(--ink);border:2px solid var(--edge);border-radius:50% 50% 46% 46%/58% 58% 42% 42%;padding:18px 10px 16px;min-height:140px;box-shadow:0 6px 0 rgba(0,0,0,.2);animation:bob 3.2s ease-in-out infinite;font:inherit}
+.plate:nth-child(even){animation-delay:-1.6s}
+.plate .e{font-size:42px;line-height:1}
+.plate .t{font:600 14px/1.25 system-ui,-apple-system,sans-serif;padding:0 4px;color:var(--ink)}
+.plate.done{opacity:.6}
+.plate.gold{border-color:var(--gold)}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.count{text-align:center;color:var(--dim);font:14px system-ui,sans-serif;margin-top:18px}
+.sheet{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(5,6,20,.7);display:none;align-items:flex-end;justify-content:center;z-index:5}
+.sheet.on{display:flex}
+.card{background:var(--card);color:var(--ink);width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:26px 22px calc(26px + env(safe-area-inset-bottom,0px));max-height:85vh;overflow:auto}
+.card .e{font-size:48px}
+.card h2{margin:6px 0 10px;font-size:22px}
+.card p{font-size:18px;line-height:1.6;margin:0 0 18px}
+.btn{-webkit-appearance:none;appearance:none;border:0;cursor:pointer;background:var(--accent);color:#fff;font:600 16px system-ui,sans-serif;padding:12px 22px;border-radius:999px}
+.fin{display:none;text-align:center;margin-top:22px;padding:18px;border:1px dashed var(--gold);border-radius:16px;line-height:1.6}
+.fin.on{display:block}
+@media (prefers-reduced-motion:reduce){.plate{animation:none}}
+</style>
+</head>
+<body>
+<div class="clock">00:00 · OPEN</div>
+<h1>De Bibliotheek van Na Middernacht</h1>
+<p class="sub">Hier hoef je niets te lezen. De boeken rijden langs op een lopende band. Pak een bordje.</p>
+<div class="belt" id="belt">
+<button type="button" class="plate" data-i="0"><span class="e">🍣</span><span class="t">Nigiri zalm</span></button>
+<button type="button" class="plate" data-i="1"><span class="e">🥟</span><span class="t">Gyoza</span></button>
+<button type="button" class="plate" data-i="2"><span class="e">🍖</span><span class="t">Lamskotelet</span></button>
+<button type="button" class="plate" data-i="3"><span class="e">📺</span><span class="t">De dinsdagmiddagkamer</span></button>
+<button type="button" class="plate" data-i="4"><span class="e">💡</span><span class="t">Boeken zonder letters</span></button>
+<button type="button" class="plate gold" data-i="5"><span class="e">🎄</span><span class="t">Tweede kerstdag</span></button>
+</div>
+<div class="count" id="count">0 van 6 bordjes gepakt</div>
+<div class="fin" id="fin">Je hebt alle bordjes gehad. De bibliotheek sluit nooit, dus kom gerust morgen weer: dan is het hier weer 26 december.</div>
+<div class="sheet" id="sheet"><div class="card" id="card"></div></div>
+<noscript><p class="sub">Zet JavaScript aan om de bordjes open te tikken.</p></noscript>
+<script>
+(function(){
+var S=[
+{e:"🍣",h:"Het boek dat je opeet",p:"Op de rug staat geen titel, alleen een wasabi-stipje. Wie het openslaat, leest niets: het smelt. Regel één van de bibliotheek: lezen is optioneel, proeven is verplicht."},
+{e:"🥟",h:"Honderd kleine dichtgevouwen geheimen",p:"Elke gyoza heeft precies zeven plooitjes, en in één ervan zit verstopt waar alle verdwenen bladzijden naartoe zijn gegaan. Je moet er wel even de krokante kant voor bakken."},
+{e:"🍖",h:"De nachtbibliothecaris",p:"Mevrouw Koteletje draagt een leesbril en stempelt alle boeken met rozemarijn. Ze fluistert: “Stilte is hier geen regel, alleen een mond vol.” Het ruikt er naar een zondag die nooit voorbij gaat."},
+{e:"📺",h:"Afdeling Nergens Aan Denken",p:"Een bank, een tv en een schaal sushi die zichzelf aanvult. Op de deur hangt een bordje: “Niet storen, hier wordt nergens aan gedacht.” De klok op de muur wijst steevast dinsdag, half drie."},
+{e:"💡",h:"De app-afdeling",p:"Alle boeken hier zijn leeg. Je typt één zin, en het boek schrijft zichzelf om tot een werkende app. Je kijkt op de klok: 00:00. Maar het voelt als drie uur later. In deze bibliotheek vliegt de tijd, behalve de wijzers."},
+{e:"🎄",h:"Het gouden bordje",p:"Aan het eind van de gang staat een lange tafel. Iedereen is er: de hele familie, een sushiboot in het midden, gelach dat net iets te hard is. Eén stoel is vrij, en hij heeft jouw naam. Niemand vraagt waar je was. Op de kalender aan de muur staat 26 december, en morgen ook weer."}
+];
+var seen={},sheet=document.getElementById("sheet"),card=document.getElementById("card"),plates=document.querySelectorAll(".plate");
+function upd(){var n=Object.keys(seen).length;document.getElementById("count").textContent=n+" van "+S.length+" bordjes gepakt";if(n===S.length){document.getElementById("fin").className="fin on"}}
+function closeSheet(){sheet.className="sheet"}
+function openSheet(i,b){var s=S[i];seen[i]=1;b.className+=" done";card.innerHTML='<div class="e">'+s.e+'</div><h2>'+s.h+'</h2><p>'+s.p+'</p><button type="button" class="btn" id="x">Volgend bordje</button>';sheet.className="sheet on";document.getElementById("x").addEventListener("click",closeSheet);upd()}
+for(var k=0;k<plates.length;k++){(function(b){b.addEventListener("click",function(){openSheet(parseInt(b.getAttribute("data-i"),10),b)})})(plates[k])}
+sheet.addEventListener("click",function(e){if(e.target===sheet){closeSheet()}});
+})();
+</script>
+</body>
+</html>
